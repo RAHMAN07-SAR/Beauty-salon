@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="RedesCreation Beauty Salon & Spa — Premium salon and spa services in Banguluru. Book online or contact +91 96766 59153" />
+  <title>RedesCreation — Beauty Salon & Spa | Banguluru</title>
+  <!-- Tailwind (CDN for prototype) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- GSAP for premium animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" integrity="sha512-Zt7QY8m3Qw2h0i4Qwz7m4p0k1cN0f5g5b0c+JdYzXwYp+3m1sQJz0qG0yY2t4pZq3y4P8Qq8RZ3rVdM0k9s9RA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <!-- ScrollReveal fallback -->
+  <script src="https://unpkg.com/scrollreveal"></script>
+ 
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+  /* ======================================================
+     RedesCreation — Single-file index.html
+     - Complete, self-contained prototype
+     - Full-screen mobile menu behavior: header hidden on mobile, only toggle visible
+     - Animations, accessibility, lazy-loading
+     - Designed to be easily customizable
+     ====================================================== */
+
+  :root{
+    --accent:#b77d70;
+    --accent-2:#3b2b28;
+    --bg:#fbf8f6;
+    --muted:#7a7a7a;
+    --dark:#0b0b0b;
+    --white:#ffffff;
+    --maxw:1200px;
+    --ease:cubic-bezier(.16,.84,.4,1);
+  }
+
+  /* Basic reset */
+  *{box-sizing:border-box}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    background:var(--bg);
+    color:var(--dark);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    line-height:1.45;
+  }
+  img{display:block;max-width:100%;height:auto}
+  a{color:inherit;text-decoration:none}
+
+  /* container */
+  .container{width:calc(100% - 40px);max-width:var(--maxw);margin:0 auto}
+
+ /* Header */
+    header.site-header{
+      position:fixed;top:0;left:0;right:0;z-index:1200;
+      background:rgba(255,255,255,0.98);
+      backdrop-filter: blur(6px);
+      box-shadow:0 8px 30px rgba(15,15,15,0.04);
+      transition: box-shadow .25s var(--ease), transform .25s var(--ease);
+    }
+    main{padding-top:92px}
+
+    /* Mobile overlay + menu */
+    .mobile-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:1300;display:none;opacity:0;transition:opacity .3s var(--ease)}
+    .mobile-overlay.open{display:block;opacity:1}
+    .mobile-menu{
+      position:fixed;inset:0;z-index:1400;background:#fff;transform:translateY(-100%);transition:transform .45s var(--ease);overflow:auto;padding:28px;
+    }
+    .mobile-menu.open{transform:translateY(0)}
+
+  /* appointment CTA */
+  .cta{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent-2),var(--accent));color:#fff;font-weight:700}
+
+  /* hamburger */
+  .hamburger{display:none;background:transparent;border:0;padding:8px;border-radius:10px;cursor:pointer}
+  .hamburger svg{width:26px;height:26px}
+
+  /* MOBILE RULES: hide header details, show only brand + hamburger */
+  @media(max-width:900px){
+    nav.primary{display:none}
+    .cta{display:none}
+    /* keep brand small */
+    header.site-header{padding:10px 14px}
+    .brand .title{display:none}
+    .hamburger{display:inline-flex}
+  }
+
+  /* ================= FULLSCREEN MOBILE MENU ================= */
+  .mobile-overlay{
+    position:fixed;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.4),rgba(0,0,0,0.6));backdrop-filter:blur(2px);z-index:1500;opacity:0;pointer-events:none;transition:opacity .35s var(--ease);
+  }
+  .mobile-overlay.open{opacity:1;pointer-events:auto}
+  .mobile-menu{
+    position:fixed;top:0;left:0;right:0;bottom:0;background:var(--white);z-index:1550;transform:translateY(-100%);transition:transform .55s var(--ease);display:flex;flex-direction:column;align-items:center;padding:48px 18px;overflow:auto
+  }
+  .mobile-menu.open{transform:translateY(0)}
+  .mobile-menu .close{position:absolute;right:18px;top:18px;background:transparent;border:0;font-size:28px;cursor:pointer}
+  .mobile-menu nav{display:flex;flex-direction:column;gap:18px;align-items:center;margin-top:36px}
+  .mobile-menu nav a{font-size:20px;font-weight:700}
+  .mobile-menu .mobile-cta{margin-top:28px}
+
+  /* ================= HERO ================= */
+  .hero{position:relative;min-height:92vh;display:flex;align-items:center}
+  .hero .bg{position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=900&q=80');background-size:cover;background-position:center;filter:contrast(1.02) brightness(.85);transform:scale(1.02)}
+  .hero .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,11,0.12),rgba(11,11,11,0.32))}
+  .hero .content{position:relative;z-index:60;padding:120px 0}
+
+  .hero .hero-grid{display:grid;grid-template-columns:1fr 420px;gap:36px;align-items:center}
+  .hero h1{font-family:'Playfair Display';font-size:clamp(28px,6.5vw,56px);line-height:1.02;margin:0;color:#fff;text-shadow:0 18px 40px rgba(0,0,0,0.4)}
+  .hero p.lead{margin-top:14px;color:rgba(255,255,255,0.95);max-width:56ch}
+  .hero .actions{margin-top:24px;display:flex;gap:12px}
+  .btn{padding:12px 18px;border-radius:999px;font-weight:700;cursor:pointer;border:0}
+  .btn.primary{background:linear-gradient(90deg,var(--accent-2),var(--accent));color:white;box-shadow:0 18px 40px rgba(59,43,40,0.12)}
+  .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.18);color:white}
+
+  /* decorative card on right */
+  .hero .side-card{background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));border-radius:14px;padding:18px;color:#fff;backdrop-filter:blur(6px);box-shadow:0 16px 40px rgba(0,0,0,0.25)}
+  .hero .side-card h4{margin:0;font-size:18px}
+  .hero .side-card p{margin:8px 0 0;color:rgba(255,255,255,0.9)}
+
+  @media(max-width:980px){
+    .hero .hero-grid{grid-template-columns:1fr; padding:80px 0}
+    .hero .side-card{display:none}
+    .hero .content{padding:80px 0}
+  }
+
+  /* ================= SERVICES ================= */
+  section.services{padding:64px 0}
+  .section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}
+  .section-head h3{font-size:28px;margin:0}
+  .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .service{background:white;border-radius:14px;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,0.06);transform:translateY(40px);opacity:0;transition:transform .7s var(--ease), opacity .7s var(--ease)}
+  .service img{height:220px;object-fit:cover;width:100%}
+  .service .body{padding:16px}
+  .service h4{margin:0;font-size:18px}
+  .service p{color:var(--muted);margin-top:8px}
+  .service .meta{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+
+  @media(max-width:980px){.services-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:640px){.services-grid{grid-template-columns:1fr}}
+
+  /* ================= GALLERY ================= */
+  section.gallery{padding:64px 0}
+  .filters{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+  .filter-btn{padding:8px 12px;border-radius:999px;border:1px solid rgba(11,11,11,0.06);background:white;cursor:pointer}
+  .filter-btn.active{background:linear-gradient(90deg,var(--accent-2),var(--accent));color:white}
+
+  .masonry{column-count:3;column-gap:18px}
+  .tile{display:inline-block;width:100%;margin:0 0 18px;border-radius:12px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.06)}
+  .tile img{width:100%;height:auto;display:block;transition:transform .4s var(--ease)}
+  .tile:hover img{transform:scale(1.04)}
+
+  @media(max-width:980px){.masonry{column-count:2}}
+  @media(max-width:640px){.masonry{column-count:1}}
+
+  /* lightbox */
+  .lightbox{position:fixed;inset:0;display:none;place-items:center;background:linear-gradient(180deg,rgba(0,0,0,0.6),rgba(0,0,0,0.9));z-index:2000;padding:30px}
+  .lightbox.open{display:grid}
+  .lightbox img{max-width:92%;max-height:84vh;border-radius:12px;box-shadow:0 22px 80px rgba(0,0,0,0.6)}
+
+  /* ================= TESTIMONIALS ================= */
+  section.testimonials{padding:64px 0;background:linear-gradient(180deg,#fff,#fff)}
+  .carousel{position:relative;overflow:hidden;border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,0.06)}
+  .slides{display:flex;transition:transform .7s var(--ease);will-change:transform}
+  .slide{min-width:100%;padding:36px;box-sizing:border-box;display:flex;gap:24px;align-items:center}
+  .quote{font-size:18px;color:var(--muted)}
+  .author{font-weight:700;margin-top:12px}
+  .carousel .controls{position:absolute;right:12px;top:12px;display:flex;gap:8px}
+  .control{background:rgba(0,0,0,0.06);border-radius:8px;padding:8px;cursor:pointer}
+
+  /* ================= PRICING ================= */
+  section.pricing{padding:64px 0}
+  .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .pricing-card{background:white;padding:20px;border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,0.06);display:flex;flex-direction:column;gap:12px}
+  .pricing-card.popular{border:2px solid var(--accent);transform:translateY(-10px)}
+  @media(max-width:980px){.pricing-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:640px){.pricing-grid{grid-template-columns:1fr}}
+
+  /* ================= BLOG ================= */
+  section.blog{padding:64px 0}
+  .posts{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .post{background:white;border-radius:12px;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,0.06)}
+  .post img{height:180px;object-fit:cover;width:100%}
+  @media(max-width:980px){.posts{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:640px){.posts{grid-template-columns:1fr}}
+
+  /* ================= FAQ ================= */
+  section.faq{padding:64px 0}
+  .faq-item{background:white;border-radius:12px;overflow:hidden;margin-bottom:12px;box-shadow:0 12px 30px rgba(0,0,0,0.04)}
+  .faq-q{padding:14px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+  .faq-a{padding:0 18px 18px;height:0;overflow:hidden;opacity:0;transition:height .45s var(--ease),opacity .45s var(--ease)}
+
+  /* ================= CONTACT ================= */
+  section.contact{padding:64px 0;background:linear-gradient(180deg,#fff,#fff)}
+  .contact-grid{display:grid;grid-template-columns:1fr 420px;gap:28px}
+  .contact-form input,.contact-form textarea{width:100%;padding:12px;border-radius:8px;border:1px solid rgba(0,0,0,0.06);margin-bottom:8px}
+  @media(max-width:980px){.contact-grid{grid-template-columns:1fr}}
+
+  /* ================= FOOTER ================= */
+  footer.site-footer{padding:28px;background:var(--dark);color:white}
+  footer .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  @media(max-width:980px){footer .grid{grid-template-columns:1fr}}
+
+  /* small helpers */
+  .muted{color:var(--muted)}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+  /* Animation helper classes (used by JS for staggering) */
+  .reveal{opacity:0;transform:translateY(30px);transition:all .7s var(--ease)}
+  .reveal.show{opacity:1;transform:none}
+
+  /* Extra padding so content not hidden below fixed header */
+  main{padding-top:86px}
+
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="max-w-[var(--maxw)] mx-auto px-6 flex items-center justify-between h-20">
+      <a href="index.html" class="flex items-center gap-3" aria-label="RedesCreation home">
+        <img src="https://dummyimage.com/220x60/fff0e9/000.png&text=RedesCreation" alt="RedesCreation logo" class="h-12">
+        <div class="hidden md:block">
+          <div class="font-serif font-bold text-lg">RedesCreation</div>
+          <div class="text-xs text-slate-500">Beauty Salon & Spa — Banguluru</div>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-8" aria-label="Primary">
+        <a href="index.html" class="text-sm text-slate-700 hover:text-[var(--accent)]">Home</a>
+        <a href="about.html" class="text-sm text-slate-700 hover:text-[var(--accent)]">About</a>
+        <a href="services.html" class="text-sm text-slate-700 hover:text-[var(--accent)]">Services</a>
+        <a href="gallery.html" class="text-sm text-slate-700 hover:text-[var(--accent)]">Gallery</a>
+        <a href="blog.html" class="text-sm text-slate-700 hover:text-[var(--accent)]">Blog</a>
+        <a href="contact.html" class="text-sm text-[var(--accent)] font-semibold">Contact</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <a href="#subscribe" class="hidden md:inline-block px-4 py-2 rounded-full bg-[var(--accent)] text-white font-semibold">Subscribe</a>
+
+        <button id="mobileToggle" aria-controls="mobileMenu" aria-expanded="false" class="md:hidden p-2 rounded-lg" title="Open menu">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M3 6h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M3 12h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M3 18h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div id="mobileOverlay" class="mobile-overlay" aria-hidden="true"></div>
+  <aside id="mobileMenu" class="mobile-menu" aria-hidden="true" role="dialog" aria-label="Mobile menu">
+    <div class="flex items-center justify-between mb-8">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="https://dummyimage.com/160x50/fff0e9/000.png&text=RedesCreation" alt="logo" class="h-10">
+        <div class="font-bold">RedesCreation</div>
+      </a>
+      <button id="mobileClose" aria-label="Close menu" class="text-2xl">✕</button>
+    </div>
+
+    <nav class="flex flex-col gap-6 text-2xl font-semibold">
+      <a href="index.html" class="mobile-link">Home</a>
+      <a href="about.html" class="mobile-link">About</a>
+      <a href="services.html" class="mobile-link">Services</a>
+      <a href="gallery.html" class="mobile-link">Gallery</a>
+      <a href="blog.html" class="mobile-link">Blog</a>
+      <a href="contact.html" class="mobile-link active">Contact</a>
+    </nav>
+
+    <div class="mt-8">
+      <a href="contact.html" class="inline-block w-full text-center py-3 bg-[var(--accent)] text-white rounded-full font-bold">Book Appointment</a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main id="home">
+    <!-- HERO -->
+    <section class="hero" aria-label="Hero banner">
+      <div class="bg" role="img" aria-label="Spa background image"></div>
+      <div class="overlay"></div>
+      <div class="container content">
+        <div class="hero-grid">
+          <div>
+            <h1>Unlock the Beauty of Luxury Spa</h1>
+            <p class="lead">Your hands deserve as much attention as the rest of your body. Professional manicure & spa services designed to provide relaxation and flawless beauty.</p>
+            <div class="actions" role="group">
+              <button class="btn primary" id="bookBtn">Get Started</button>
+              <button class="btn ghost" id="servicesBtn">See Services</button>
+            </div>
+            <div style="margin-top:16px;color:rgba(255,255,255,0.9)">Call: +91 96766 59153 • <a href="mailto:info@redescreation.in" style="text-decoration:underline;color:inherit">info@redescreation.in</a></div>
+          </div>
+          <aside class="side-card" aria-hidden="true">
+            <h4>Signature Offer</h4>
+            <p>45% off on first full-body scrub + facial package.</p>
+            <div style="margin-top:12px">
+              <button class="btn primary">Book Offer</button>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services" class="services section" aria-labelledby="servicesLabel">
+      <div class="container">
+        <div class="section-head">
+          <h3 id="servicesLabel">Featured Services</h3>
+          <div class="muted">Professional therapists • Organic products</div>
+        </div>
+        <div class="services-grid" id="servicesGrid">
+          <article class="service reveal">
+            <img loading="lazy" src="https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=900&q=80" alt="Foot wash and leg massage">
+            <div class="body"><h4>Foot Wash & Leg Massage</h4><p>Relieve tension and improve circulation with our soothing foot therapies.</p>
+              <div class="meta"><span class="muted">30–45 min</span><a class="cta">Book</a></div></div>
+          </article>
+
+          <article class="service reveal">
+            <img loading="lazy" src="https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=900&q=80" alt="Deep facial">
+            <div class="body"><h4>Deep Clean Facial</h4><p>Glow and clarity with our signature deep-clean facial.</p><div class="meta"><span class="muted">45 min</span><a class="cta">Book</a></div></div>
+          </article>
+
+          <article class="service reveal">
+            <img loading="lazy" src="https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=900&q=80" alt="Full body scrub">
+            <div class="body"><h4>Full Body Scrub</h4><p>Exfoliate and renew your skin with nutrient-rich scrubs.</p><div class="meta"><span class="muted">60 min</span><a class="cta">Book</a></div></div>
+          </article>
+
+          <article class="service reveal">
+            <img loading="lazy" src="https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=900&q=80" alt="Manicure">
+            <div class="body"><h4>Luxury Manicure</h4><p>Long-lasting finishes and bespoke nail art.</p><div class="meta"><span class="muted">30 min</span><a class="cta">Book</a></div></div>
+          </article>
+
+          <article class="service reveal">
+            <img loading="lazy" src="https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=900&q=80" alt="Aromatherapy massage">
+            <div class="body"><h4>Aromatherapy Massage</h4><p>Soothe the mind and body with essential oil rituals.</p><div class="meta"><span class="muted">60–90 min</span><a class="cta">Book</a></div></div>
+          </article>
+
+          <article class="service reveal">
+            <img loading="lazy" src="https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=900&q=80" alt="Couples package">
+            <div class="body"><h4>Couples Spa Package</h4><p>Shared rituals and relaxation for two.</p><div class="meta"><span class="muted">90–120 min</span><a class="cta">Book</a></div></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section id="gallery" class="gallery section" aria-labelledby="galleryLabel">
+      <div class="container">
+        <div class="section-head"><h3 id="galleryLabel">Our Gallery</h3><div class="muted">Moments from our salon and treatments</div></div>
+        <div class="filters" role="tablist" aria-label="Gallery filters">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="massage">Massage</button>
+          <button class="filter-btn" data-filter="facial">Facial</button>
+          <button class="filter-btn" data-filter="nail">Nail</button>
+        </div>
+
+        <div class="masonry" id="masonry">
+          <figure class="tile" data-category="massage" tabindex="0"><img loading="lazy" alt="massage" src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=900&q=80"></figure>
+          <figure class="tile" data-category="facial" tabindex="0"><img loading="lazy" alt="facial" src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=900&q=80"></figure>
+          <figure class="tile" data-category="nail" tabindex="0"><img loading="lazy" alt="nail" src="https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=900&q=80"></figure>
+          <figure class="tile" data-category="massage" tabindex="0"><img loading="lazy" alt="relax" src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=900&q=80"></figure>
+          <figure class="tile" data-category="nail" tabindex="0"><img loading="lazy" alt="nail art" src="https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=900&q=80"></figure>
+          <figure class="tile" data-category="facial" tabindex="0"><img loading="lazy" alt="signature facial" src="https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=900&q=80"></figure>
+        </div>
+
+        <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
+          <button id="closeLightbox" aria-label="Close image" style="position:absolute;top:16px;right:20px;background:none;border:0;color:white;font-size:28px;cursor:pointer">✕</button>
+          <img src="" alt="" id="lightboxImg">
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="testimonials section" aria-labelledby="testiLabel">
+      <div class="container">
+        <div class="section-head"><h3 id="testiLabel">What Our Clients Say</h3><div class="muted">Real stories from happy customers</div></div>
+        <div class="carousel" id="carousel">
+          <div class="slides" id="slides">
+            <div class="slide"><div style="flex:1"><div class="quote">“Amazing service — my skin has never felt better.”</div><div class="author muted">— Priya K.</div></div><div style="flex:0 0 120px;text-align:center"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80" alt="Priya" style="width:76px;height:76px;border-radius:50%;object-fit:cover"></div></div>
+            <div class="slide"><div style="flex:1"><div class="quote">“Highly professional therapists and a relaxing environment.”</div><div class="author muted">— Aman R.</div></div><div style="flex:0 0 120px;text-align:center"><img src="https://images.unsplash.com/photo-1545996124-1c8f7f2b44f1?auto=format&fit=crop&w=200&q=80" alt="Aman" style="width:76px;height:76px;border-radius:50%;object-fit:cover"></div></div>
+            <div class="slide"><div style="flex:1"><div class="quote">“I love their manicure services. The polish lasts weeks.”</div><div class="author muted">— Natasha P.</div></div><div style="flex:0 0 120px;text-align:center"><img src="https://images.unsplash.com/photo-1545996126-8f7b5b4f0c3a?auto=format&fit=crop&w=200&q=80" alt="Natasha" style="width:76px;height:76px;border-radius:50%;object-fit:cover"></div></div>
+          </div>
+          <div class="controls"><button class="control" id="prev">‹</button><button class="control" id="next">›</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section id="pricing" class="pricing section" aria-labelledby="pricingLabel">
+      <div class="container">
+        <div class="section-head"><h3 id="pricingLabel">Packages & Pricing</h3><div class="muted">Choose a plan that fits</div></div>
+        <div class="pricing-grid">
+          <div class="pricing-card">
+            <div style="display:flex;justify-content:space-between;align-items:center"><div><div class="muted">Starter</div><div style="font-size:26px;font-weight:800">₹799</div></div><div style="font-size:22px;color:var(--accent)">☆</div></div>
+            <p class="muted">Basic manicure + foot wash.</p>
+            <ul style="margin:12px 0 0 16px;color:var(--muted)"><li>Quick service</li><li>Hygienic tools</li></ul>
+            <div style="margin-top:auto"><button class="btn primary">Purchase</button></div>
+          </div>
+
+          <div class="pricing-card popular">
+            <div style="display:flex;justify-content:space-between;align-items:center"><div><div class="muted">Popular</div><div style="font-size:26px;font-weight:800">₹1499</div></div><div style="font-size:22px;color:var(--accent)">★</div></div>
+            <p class="muted">Full body scrub + facial.</p>
+            <ul style="margin:12px 0 0 16px;color:var(--muted)"><li>Full body treatment</li><li>Deep facial</li></ul>
+            <div style="margin-top:auto"><button class="btn" style="background:var(--accent-2);color:white">Purchase</button></div>
+          </div>
+
+          <div class="pricing-card">
+            <div style="display:flex;justify-content:space-between;align-items:center"><div><div class="muted">Premium</div><div style="font-size:26px;font-weight:800">₹2499</div></div><div style="font-size:22px;color:var(--accent)">✦</div></div>
+            <p class="muted">Signature spa day with massage.</p>
+            <ul style="margin:12px 0 0 16px;color:var(--muted)"><li>Extended massage</li><li>Complimentary products</li></ul>
+            <div style="margin-top:auto"><button class="btn primary">Purchase</button></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BLOG -->
+    <section id="blog" class="blog section" aria-labelledby="blogLabel">
+      <div class="container">
+        <div class="section-head"><h3 id="blogLabel">Latest News</h3><div class="muted">Tips & trends</div></div>
+        <div class="posts">
+          <article class="post"><img loading="lazy" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=1400&q=80" alt="facial tips"><div style="padding:12px"><h4 style="margin:0;font-family:'Playfair Display'">How to choose the right facial</h4><p class="muted">Short excerpt: Learn which facial suits your skin type.</p></div></article>
+          <article class="post"><img loading="lazy" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=1400&q=80" alt="massage benefits"><div style="padding:12px"><h4 style="margin:0;font-family:'Playfair Display'">Benefits of regular massages</h4><p class="muted">Short excerpt: Chronic tension relief and better sleep.</p></div></article>
+          <article class="post"><img loading="lazy" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=1400&q=80" alt="nail trends"><div style="padding:12px"><h4 style="margin:0;font-family:'Playfair Display'">Top nail trends 2025</h4><p class="muted">Short excerpt: Explore the hottest palettes and textures.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="faq section" aria-labelledby="faqLabel">
+      <div class="container">
+        <div class="section-head"><h3 id="faqLabel">FAQ</h3><div class="muted">Common questions answered</div></div>
+        <div class="faq-item"><div class="faq-q" tabindex="0">What is your cancellation policy?<span class="muted">+</span></div><div class="faq-a"><p>Cancellations must be made 24 hours in advance.</p></div></div>
+        <div class="faq-item"><div class="faq-q" tabindex="0">Do you accept walk-ins?<span class="muted">+</span></div><div class="faq-a"><p>Walk-ins accepted based on availability.</p></div></div>
+        <div class="faq-item"><div class="faq-q" tabindex="0">Are your products cruelty-free?<span class="muted">+</span></div><div class="faq-a"><p>Yes, we prioritize cruelty-free, natural products.</p></div></div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="contact section" aria-labelledby="contactLabel">
+      <div class="container">
+        <div class="section-head"><h3 id="contactLabel">Get in Touch</h3><div class="muted">Book or ask us a question</div></div>
+        <div class="contact-grid">
+          <form class="contact-form" id="contactForm" aria-label="Contact form">
+            <label class="sr-only" for="name">Name</label>
+            <input id="name" name="name" placeholder="Name" required>
+            <label class="sr-only" for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="Email" required>
+            <label class="sr-only" for="phone">Phone</label>
+            <input id="phone" name="phone" placeholder="Phone" value="+91">
+            <label class="sr-only" for="message">Message</label>
+            <textarea id="message" name="message" rows="5" placeholder="Message"></textarea>
+            <button type="submit" class="btn primary">Send Message</button>
+          </form>
+
+          <aside style="border-radius:12px;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,0.06)">
+            <div style="padding:14px;background:linear-gradient(180deg,#fff,#f8f6f5)">
+              <div style="font-weight:700">Find us</div>
+              <div class="muted">Banguluru — visit our salon for a premium experience</div>
+            </div>
+            <div style="height:320px;background-image:url('https://images.unsplash.com/photo-1509395176047-4a66953fd231?auto=format&fit=crop&w=1400&q=80');background-size:cover;background-position:center"></div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="grid">
+        <div>
+          <img src="https://dummyimage.com/200x70/fff0e9/000.png&text=RedesCreation" alt="logo" style="height:46px">
+          <p style="margin-top:8px;color:rgba(255,255,255,0.85)">RedesCreation Beauty Salon & Spa — Banguluru</p>
+        </div>
+        <div>
+          <h4 style="color:white">Quick Links</h4>
+          <ul style="list-style:none;padding:0;color:rgba(255,255,255,0.85)">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 style="color:white">Contact</h4>
+          <p style="color:rgba(255,255,255,0.85)">Email: info@redescreation.in</p>
+          <p style="color:rgba(255,255,255,0.85)">Phone: +91 96766 59153</p>
+        </div>
+      </div>
+      <div style="margin-top:18px;border-top:1px solid rgba(255,255,255,0.06);padding-top:12px;color:rgba(255,255,255,0.6)">© 2025 RedesCreation. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS: interactions and animations -->
+  <script>
+  (function(){
+    'use strict';
+
+    /* Utility selectors */
+    const $ = (s, root=document) => root.querySelector(s);
+    const $$ = (s, root=document) => Array.from(root.querySelectorAll(s));
+
+    /* MOBILE MENU BEHAVIOR
+       Requirements from user:
+       - On mobile, header elements (nav, cta) should be hidden, only the mobile toggle is visible
+       - Clicking the mobile toggle opens a full-screen overlay/menu that shows the whole page's navigation options
+       - Menu open must lock scroll, and close properly
+    */
+
+    const mobileToggle = $('#mobileToggle');
+    const mobileMenu = $('#mobileMenu');
+    const mobileOverlay = $('#mobileOverlay');
+    const mobileClose = $('#mobileClose');
+    const focusableMobile = 'a,button,input';
+
+    function openMobile(){
+      mobileMenu.classList.add('open');
+      mobileOverlay.classList.add('open');
+      mobileMenu.setAttribute('aria-hidden','false');
+      mobileOverlay.setAttribute('aria-hidden','false');
+      mobileToggle.setAttribute('aria-expanded','true');
+      document.body.style.overflow = 'hidden';
+      // trap focus inside menu
+      trapFocus(mobileMenu);
+    }
+    function closeMobile(){
+      mobileMenu.classList.remove('open');
+      mobileOverlay.classList.remove('open');
+      mobileMenu.setAttribute('aria-hidden','true');
+      mobileOverlay.setAttribute('aria-hidden','true');
+      mobileToggle.setAttribute('aria-expanded','false');
+      document.body.style.overflow = '';
+      releaseFocus();
+    }
+
+    mobileToggle.addEventListener('click', ()=>{
+      const open = mobileMenu.classList.contains('open');
+      if(open) closeMobile(); else openMobile();
+    });
+    mobileClose.addEventListener('click', closeMobile);
+    mobileOverlay.addEventListener('click', closeMobile);
+    // close when clicking a mobile link
+    $$('.m-link').forEach(l=>l.addEventListener('click', closeMobile));
+
+    // keyboard escape closes
+    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && mobileMenu.classList.contains('open')) closeMobile(); });
+
+    /* Simple focus trap for modal menu */
+    let previouslyFocused = null;
+    function trapFocus(container){
+      previouslyFocused = document.activeElement;
+      const focusables = Array.from(container.querySelectorAll(focusableMobile));
+      if(focusables.length) focusables[0].focus();
+      document.addEventListener('focus', enforceFocus, true);
+      function enforceFocus(e){ if(!container.contains(e.target)) { e.stopPropagation(); focusables[0].focus(); } }
+      container._removeTrap = ()=>{ document.removeEventListener('focus', enforceFocus, true); if(previouslyFocused) previouslyFocused.focus(); }
+    }
+    function releaseFocus(){ if(mobileMenu._removeTrap) mobileMenu._removeTrap(); }
+
+    /* HERO PARALLAX EFFECT (subtle) */
+    const heroBg = document.querySelector('.hero .bg');
+    const hero = document.querySelector('.hero');
+    if(hero){
+      hero.addEventListener('mousemove', (e)=>{
+        const rect = hero.getBoundingClientRect();
+        const x = (e.clientX - rect.left)/rect.width - 0.5; // -0.5..0.5
+        const y = (e.clientY - rect.top)/rect.height - 0.5;
+        heroBg.style.transform = `translate3d(${x*12}px,${y*8}px,0) scale(1.04)`;
+      });
+      hero.addEventListener('mouseleave', ()=>{ heroBg.style.transform = ''; });
+    }
+
+    /* REVEAL ON SCROLL */
+    const reveals = $$('.reveal');
+    const revealObs = new IntersectionObserver((entries)=>{
+      entries.forEach(ent=>{
+        if(ent.isIntersecting){ ent.target.classList.add('show'); revealObs.unobserve(ent.target); }
+      });
+    },{threshold:0.18});
+    reveals.forEach(r=>revealObs.observe(r));
+
+    /* GALLERY FILTER + LIGHTBOX */
+    const filterBtns = $$('.filter-btn');
+    const tiles = $$('.tile');
+    filterBtns.forEach(btn=> btn.addEventListener('click', ()=>{
+      filterBtns.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      tiles.forEach(t=>{ const cat = t.dataset.category || '';
+        if(f==='all' || cat === f) t.style.display='inline-block'; else t.style.display='none';
+      });
+    }));
+
+    const lightbox = $('#lightbox');
+    const lightboxImg = $('#lightboxImg');
+    const closeLightbox = $('#closeLightbox');
+    tiles.forEach(tile=>{
+      tile.addEventListener('click', ()=>{ const img = tile.querySelector('img'); openLightbox(img.src,img.alt); });
+      tile.addEventListener('keydown', (e)=>{ if(e.key==='Enter') { const img = tile.querySelector('img'); openLightbox(img.src,img.alt); } });
+    });
+    function openLightbox(src,alt){ lightboxImg.src = src; lightboxImg.alt = alt||''; lightbox.classList.add('open'); lightbox.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }
+    function closeLB(){ lightbox.classList.remove('open'); lightbox.setAttribute('aria-hidden','true'); lightboxImg.src=''; document.body.style.overflow=''; }
+    closeLightbox.addEventListener('click', closeLB);
+    lightbox.addEventListener('click', (e)=>{ if(e.target === lightbox) closeLB(); });
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && lightbox.classList.contains('open')) closeLB(); });
+
+    /* TESTIMONIAL CAROUSEL */
+    const slidesWrap = $('#slides');
+    const slides = $$('.slide', slidesWrap);
+    let current = 0;
+    function showSlide(i){ current = (i+slides.length)%slides.length; slidesWrap.style.transform = `translateX(-${current*100}%)`; }
+    $('#next').addEventListener('click', ()=> showSlide(current+1));
+    $('#prev').addEventListener('click', ()=> showSlide(current-1));
+    // autoplay
+    let autoplay = setInterval(()=> showSlide(current+1), 6000);
+    slidesWrap.addEventListener('mouseenter', ()=> clearInterval(autoplay));
+    slidesWrap.addEventListener('mouseleave', ()=> autoplay = setInterval(()=> showSlide(current+1), 6000));
+
+    /* FAQ accordion */
+    $$('.faq-item').forEach(item=>{
+      const q = item.querySelector('.faq-q'); const a = item.querySelector('.faq-a');
+      q.addEventListener('click', ()=> toggleFaq(item,q,a));
+      q.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') toggleFaq(item,q,a); });
+    });
+    function toggleFaq(item,q,a){ const open = item.classList.toggle('open'); if(open){ a.style.height = a.scrollHeight + 'px'; a.style.opacity='1'; q.setAttribute('aria-expanded','true'); } else { a.style.height='0'; a.style.opacity='0'; q.setAttribute('aria-expanded','false'); } }
+
+    /* CONTACT FORM */
+    const contact = $('#contactForm'); contact.addEventListener('submit', (e)=>{
+      e.preventDefault(); const name=contact.name.value.trim(); const email=contact.email.value.trim(); if(!name||!email){ alert('Please provide name and email'); return; }
+      const btn = contact.querySelector('button[type="submit"]'); btn.disabled=true; btn.textContent='Sending...'; setTimeout(()=>{ btn.disabled=false; btn.textContent='Send Message'; alert('Thanks — we will contact you soon!'); contact.reset(); }, 900 + Math.random()*600);
+    });
+
+    /* SMALL: smooth scroll for anchor links */
+    $$('a[href^="#"]').forEach(a=> a.addEventListener('click', (e)=>{
+      const href=a.getAttribute('href'); if(href.length>1){ e.preventDefault(); const tgt=document.querySelector(href); if(tgt){ const pos = tgt.getBoundingClientRect().top + window.scrollY - 80; window.scrollTo({top:pos,behavior:'smooth'}); closeMobile(); } }
+    }));
+
+    /* Accessibility: focus outlines for keyboard users */
+    (function(){ let usingKeyboard=false; function handleKey(e){ if(e.key==='Tab'){ usingKeyboard=true; document.documentElement.classList.add('using-keyboard'); window.removeEventListener('keydown', handleKey); } }
+      window.addEventListener('keydown', handleKey);
+    })();
+
+    /* small console banner */
+    console.info('RedesCreation single-file prototype initialized');
+
+  })();
+  </script>
+</body>
+</html>

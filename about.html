@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="RedesCreation Beauty Salon & Spa — Premium salon and spa services in Banguluru. Book online or contact +91 96766 59153" />
+  <title>RedesCreation — Beauty Salon & Spa | Banguluru</title>
+  <!-- Tailwind (CDN for prototype) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- GSAP for premium animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" integrity="sha512-Zt7QY8m3Qw2h0i4Qwz7m4p0k1cN0f5g5b0c+JdYzXwYp+3m1sQJz0qG0yY2t4pZq3y4P8Qq8RZ3rVdM0k9s9RA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <!-- ScrollReveal fallback -->
+  <script src="https://unpkg.com/scrollreveal"></script>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    /* ==========================
+       GLOBAL STYLES & VARIABLES
+    ========================== */
+    :root {
+      --accent: #b77d70;
+      --accent-dark: #a0685b;
+      --dark: #0b0b0b;
+      --light: #ffffff;
+      --muted: #f8f8f8;
+      --transition: all 0.3s ease;
+    }
+    * {margin: 0;padding: 0;box-sizing: border-box;}
+    body {font-family: 'Inter', sans-serif;background: var(--light);color: var(--dark);overflow-x: hidden;line-height: 1.6;}
+    img {max-width: 100%;display: block;}
+    a {text-decoration: none;color: inherit;}
+    h1,h2,h3,h4 {font-family: 'Playfair Display', serif;}
+
+   /* Header */
+    header.site-header{
+      position:fixed;top:0;left:0;right:0;z-index:1200;
+      background:rgba(255,255,255,0.98);
+      backdrop-filter: blur(6px);
+      box-shadow:0 8px 30px rgba(15,15,15,0.04);
+      transition: box-shadow .25s var(--ease), transform .25s var(--ease);
+    }
+    main{padding-top:92px}
+
+    /* Mobile overlay + menu */
+    .mobile-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:1300;display:none;opacity:0;transition:opacity .3s var(--ease)}
+    .mobile-overlay.open{display:block;opacity:1}
+    .mobile-menu{
+      position:fixed;inset:0;z-index:1400;background:#fff;transform:translateY(-100%);transition:transform .45s var(--ease);overflow:auto;padding:28px;
+    }
+    .mobile-menu.open{transform:translateY(0)}
+
+    /* HERO SECTION */
+    .hero {position: relative;min-height: 70vh;background: url('https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=900&q=80') center/cover no-repeat;display: flex;justify-content: center;align-items: center;text-align: center;color: white;overflow: hidden;}
+    .hero::after {content: '';position: absolute;inset: 0;background: rgba(0,0,0,0.55);}
+    .hero h1 {z-index: 1;font-size: 3rem;animation: fadeUp 1.5s ease forwards;}
+
+    /* ABOUT SECTION */
+    .about-section {padding: 6rem 3rem;display: grid;grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));gap: 3rem;align-items: center;}
+    .about-text {animation: fadeInLeft 1s ease forwards;opacity: 0;}
+    .about-image img {border-radius: 20px;box-shadow: 0 10px 25px rgba(0,0,0,0.1);transform: scale(0.95);opacity: 0;animation: fadeInRight 1s ease forwards;animation-delay: 0.5s;}
+
+    /* MISSION & VALUES */
+    .mission-values {background: var(--muted);padding: 5rem 3rem;text-align: center;}
+    .value-grid {display: grid;grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));gap: 2rem;margin-top: 3rem;}
+    .value-card {background: white;padding: 2rem;border-radius: 20px;box-shadow: 0 5px 15px rgba(0,0,0,0.05);transition: transform 0.3s ease;}
+    .value-card:hover {transform: translateY(-5px);}
+
+    /* TIMELINE SECTION */
+    .timeline {position: relative;padding: 6rem 3rem;max-width: 1000px;margin: auto;}
+    .timeline::before {content: "";position: absolute;left: 50%;top: 0;bottom: 0;width: 4px;background: var(--accent);transform: translateX(-50%);}
+    .timeline-item {position: relative;margin: 3rem 0;width: 50%;padding: 1rem 2rem;box-sizing: border-box;}
+    .timeline-item:nth-child(odd) {left: 0;text-align: right;}
+    .timeline-item:nth-child(even) {left: 50%;}
+    .timeline-item::before {content: "";position: absolute;top: 15px;width: 20px;height: 20px;background: var(--accent);border-radius: 50%;border: 4px solid white;box-shadow: 0 0 0 3px var(--accent);}
+    .timeline-item:nth-child(odd)::before {right: -12px;}
+    .timeline-item:nth-child(even)::before {left: -12px;}
+
+    /* TEAM SECTION */
+    .team-section {padding: 6rem 3rem;text-align: center;}
+    .team-grid {display: grid;grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));gap: 2rem;margin-top: 3rem;}
+    .team-member {background: white;border-radius: 20px;overflow: hidden;box-shadow: 0 8px 20px rgba(0,0,0,0.08);transform: translateY(40px);opacity: 0;transition: all 0.6s ease;}
+    .team-member img {width: 100%;height: 300px;object-fit: cover;}
+    .team-member h3 {padding: 1rem 0 0.5rem;}
+    .team-member p {padding-bottom: 1rem;color: #666;}
+
+    /* COUNTER SECTION */
+    .counter-section {background: var(--accent);color: white;padding: 4rem 3rem;text-align: center;display: flex;justify-content: space-around;flex-wrap: wrap;}
+    .counter {font-size: 3rem;font-weight: 700;}
+    .counter-label {font-size: 1.2rem;margin-top: 0.5rem;}
+
+    /* ANIMATIONS */
+    @keyframes slideDown {from {transform: translateY(-100%);opacity: 0;} to {transform: translateY(0);opacity: 1;}}
+    @keyframes fadeUp {from {opacity: 0;transform: translateY(40px);} to {opacity: 1;transform: translateY(0);}}
+    @keyframes fadeInLeft {from {opacity: 0;transform: translateX(-40px);} to {opacity: 1;transform: translateX(0);}}
+    @keyframes fadeInRight {from {opacity: 0;transform: translateX(40px);} to {opacity: 1;transform: translateX(0);}}
+
+    /* FOOTER */
+    /* footer {background: var(--dark);color: white;display: grid;grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));gap: 2rem;padding: 3rem;margin-top: 5rem;}
+    footer a:hover {color: var(--accent);} */
+ 
+    /* RESPONSIVE */
+    @media(max-width: 768px) {
+      .timeline::before {left: 10px;}
+      .timeline-item {width: 100%;padding-left: 2.5rem;margin: 2rem 0;}
+      .timeline-item:nth-child(odd), .timeline-item:nth-child(even) {left: 0;text-align: left;}
+      .timeline-item::before {left: 0;}
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="max-w-[var(--maxw)] mx-auto px-6 flex items-center justify-between h-20">
+      <a href="index.html" class="flex items-center gap-3" aria-label="RedesCreation home">
+        <img src="https://dummyimage.com/220x60/fff0e9/000.png&text=RedesCreation" alt="RedesCreation logo" class="h-12">
+        <div class="hidden md:block">
+          <div class="font-serif font-bold text-lg">RedesCreation</div>
+          <div class="text-xs text-slate-500">Beauty Salon & Spa — Banguluru</div>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-8" aria-label="Primary">
+        <a href="index.html" class="text-sm text-slate-700 hover:text-[var(--accent)]">Home</a>
+        <a href="about.html" class="text-sm text-slate-700 hover:text-[var(--accent)]">About</a>
+        <a href="services.html" class="text-sm text-slate-700 hover:text-[var(--accent)]">Services</a>
+        <a href="gallery.html" class="text-sm text-slate-700 hover:text-[var(--accent)]">Gallery</a>
+        <a href="blog.html" class="text-sm text-slate-700 hover:text-[var(--accent)]">Blog</a>
+        <a href="contact.html" class="text-sm text-[var(--accent)] font-semibold">Contact</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <a href="#subscribe" class="hidden md:inline-block px-4 py-2 rounded-full bg-[var(--accent)] text-white font-semibold">Subscribe</a>
+
+        <button id="mobileToggle" aria-controls="mobileMenu" aria-expanded="false" class="md:hidden p-2 rounded-lg" title="Open menu">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M3 6h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M3 12h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M3 18h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div id="mobileOverlay" class="mobile-overlay" aria-hidden="true"></div>
+  <aside id="mobileMenu" class="mobile-menu" aria-hidden="true" role="dialog" aria-label="Mobile menu">
+    <div class="flex items-center justify-between mb-8">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="https://dummyimage.com/160x50/fff0e9/000.png&text=RedesCreation" alt="logo" class="h-10">
+        <div class="font-bold">RedesCreation</div>
+      </a>
+      <button id="mobileClose" aria-label="Close menu" class="text-2xl">✕</button>
+    </div>
+
+    <nav class="flex flex-col gap-6 text-2xl font-semibold">
+      <a href="index.html" class="mobile-link">Home</a>
+      <a href="about.html" class="mobile-link">About</a>
+      <a href="services.html" class="mobile-link">Services</a>
+      <a href="gallery.html" class="mobile-link">Gallery</a>
+      <a href="blog.html" class="mobile-link">Blog</a>
+      <a href="contact.html" class="mobile-link active">Contact</a>
+    </nav>
+
+    <div class="mt-8">
+      <a href="contact.html" class="inline-block w-full text-center py-3 bg-[var(--accent)] text-white rounded-full font-bold">Book Appointment</a>
+    </div>
+  </aside>
+
+
+  <section class="hero">
+    <h1>About RedesCreation</h1>
+  </section>
+
+  <section class="about-section">
+    <div class="about-text">
+      <h2>Our Story</h2>
+      <p>At RedesCreation, we believe beauty is more than skin deep — it's about how you feel inside and out. Established in Banguluru, we have been delivering luxury spa and salon services for over a decade, offering clients a serene escape from daily stress.</p>
+      <p>Our salon blends natural elements with modern aesthetics to create a perfect atmosphere for relaxation and rejuvenation.</p>
+    </div>
+    <div class="about-image">
+      <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=900&q=80" alt="Salon Interior">
+    </div>
+  </section>
+
+  <section class="mission-values">
+    <h2>Our Mission & Values</h2>
+    <div class="value-grid">
+      <div class="value-card"><h3>Excellence</h3><p>We are committed to providing top-tier beauty and spa services using the highest quality products.</p></div>
+      <div class="value-card"><h3>Care</h3><p>Our clients are our priority. We create personalized experiences to meet their unique needs.</p></div>
+      <div class="value-card"><h3>Sustainability</h3><p>We support eco-friendly practices to protect our planet while pampering you.</p></div>
+    </div>
+  </section>
+
+  <section class="timeline">
+    <div class="timeline-item"><h3>2010</h3><p>RedesCreation was founded with a mission to bring world-class salon services to Banguluru.</p></div>
+    <div class="timeline-item"><h3>2013</h3><p>We introduced our signature spa treatments, combining traditional techniques with modern therapies.</p></div>
+    <div class="timeline-item"><h3>2017</h3><p>Expanded to a larger facility with eco-friendly interiors and advanced equipment.</p></div>
+    <div class="timeline-item"><h3>2021</h3><p>Launched digital booking and virtual consultations for client convenience.</p></div>
+  </section>
+
+  <section class="counter-section">
+    <div><div class="counter" data-target="15">0</div><div class="counter-label">Years of Experience</div></div>
+    <div><div class="counter" data-target="5000">0</div><div class="counter-label">Happy Clients</div></div>
+    <div><div class="counter" data-target="50">0</div><div class="counter-label">Expert Staff</div></div>
+    <div><div class="counter" data-target="20">0</div><div class="counter-label">Awards Won</div></div>
+  </section>
+
+  <section class="team-section">
+    <h2>Meet Our Team</h2>
+    <div class="team-grid">
+      <div class="team-member"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80"><h3>Anita Sharma</h3><p>Founder & Lead Stylist</p></div>
+      <div class="team-member"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=600&q=80"><h3>Ravi Kumar</h3><p>Massage Therapist</p></div>
+      <div class="team-member"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80"><h3>Pooja Nair</h3><p>Skin Specialist</p></div>
+      <div class="team-member"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=600&q=80"><h3>Rahul Mehta</h3><p>Hair Expert</p></div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+    <footer class="mt-12 bg-[var(--accent-dark)] text-white">
+      <div class="max-w-[var(--maxw)] mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div>
+          <img src="https://dummyimage.com/160x50/fff0e9/000.png&text=RedesCreation" alt="logo" class="h-10 mb-4">
+          <p>RedesCreation Beauty Salon & Spa — Banguluru. Premium salon and spa services curated for relaxation and beauty.</p>
+        </div>
+        <div>
+          <h4 class="font-semibold text-lg">Quick Links</h4>
+          <ul class="mt-4 space-y-2 text-sm">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html" class="underline">Services</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold text-lg">Contact</h4>
+          <div class="mt-4 text-sm">
+            <div>Email: info@redescreation.in</div>
+            <div>Phone: +91 96766 59153</div>
+            <div class="mt-2">Address: Banguluru</div>
+          </div>
+        </div>
+      </div>
+      <div class="text-center text-sm bg-[rgba(0,0,0,0.12)] py-3">© 2025 RedesCreation. All rights reserved.</div>
+    </footer>
+
+  <script>
+    'use strict';
+
+      /* ---------- helpers ---------- */
+      const $ = (s, r = document) => r.querySelector(s);
+      const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+      const isMobile = () => window.matchMedia('(max-width: 900px)').matches;
+      const focusableSelector = 'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
+
+    
+      // Mobile menu
+      const mobileToggle = $('#mobileToggle');
+      const mobileMenu = $('#mobileMenu');
+      const mobileOverlay = $('#mobileOverlay');
+      const mobileClose = $('#mobileClose');
+
+      function openMobile(){
+        mobileMenu.classList.add('open');
+        mobileOverlay.classList.add('open');
+        mobileMenu.setAttribute('aria-hidden','false');
+        mobileToggle.setAttribute('aria-expanded','true');
+        document.body.style.overflow='hidden';
+        trapFocus(mobileMenu);
+      }
+      function closeMobile(){
+        mobileMenu.classList.remove('open');
+        mobileOverlay.classList.remove('open');
+        mobileMenu.setAttribute('aria-hidden','true');
+        mobileToggle.setAttribute('aria-expanded','false');
+        document.body.style.overflow='';
+        releaseFocus();
+      }
+
+      if(mobileToggle) mobileToggle.addEventListener('click', () => mobileMenu.classList.contains('open') ? closeMobile() : openMobile());
+      if(mobileOverlay) mobileOverlay.addEventListener('click', closeMobile);
+      if(mobileClose) mobileClose.addEventListener('click', closeMobile);
+      $$('.mobile-link').forEach(l => l.addEventListener('click', closeMobile));
+
+    // Animate counters
+    const counters = document.querySelectorAll('.counter');
+    const speed = 200;
+    const counterObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          counters.forEach(counter => {
+            const updateCount = () => {
+              const target = +counter.getAttribute('data-target');
+              const count = +counter.innerText;
+              const increment = target / speed;
+              if (count < target) {
+                counter.innerText = Math.ceil(count + increment);
+                setTimeout(updateCount, 20);
+              } else {
+                counter.innerText = target;
+              }
+            };
+            updateCount();
+          });
+          counterObserver.disconnect();
+        } 
+      });
+    });
+    counterObserver.observe(document.querySelector('.counter-section'));
+
+    // Intersection Observer for fade-in effects
+    const fadeElements = document.querySelectorAll('.about-text, .about-image img, .team-member');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.2 });
+    fadeElements.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
